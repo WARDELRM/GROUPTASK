@@ -8,10 +8,9 @@ window.onload = function() {
   var moveKeys;
 
   function preload() {
-    //game.load.spritesheet('wizard', 'assets/spritesheets/thewizard.png', 64, 64);
+    game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
     game.load.tilemap('testarena', 'assets/tilemaps/maps/testarenatiles.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.tilemap('arena', 'assets/tilemaps/maps/arenatiles.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.spritesheet('testPlayer', 'assets/sprites/spritesheets/testwizard.png', 64, 64);
     game.load.image('tiles', 'assets/tilemaps/tiles/deserttiles.png');
     game.load.image('testweapon', 'assets/sprites/testweapon.png')
 
@@ -27,7 +26,7 @@ window.onload = function() {
     layer = map.createLayer('Ground')
     layer.resizeWorld();
 
-    player = game.add.sprite(game.world.centerY, game.world.centerX, 'testPlayer');
+    player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
     game.camera.follow(player);
