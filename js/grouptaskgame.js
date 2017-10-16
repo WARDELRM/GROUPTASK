@@ -55,6 +55,14 @@ window.onload = function() {
   }
 
   function update() {
+    //TODO: Have the shoot animation play all the way through
+    /*
+    if(player.animations.name == 'spellcast'){
+      if(player.animations.isPlaying){
+        console.log(player.animations.name);
+      }
+    }
+    */
 
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
