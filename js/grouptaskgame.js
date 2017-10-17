@@ -13,6 +13,7 @@ window.onload = function() {
     //game.load.tilemap('arena', 'assets/tilemaps/maps/arenatiles.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/tiles/deserttiles.png');
     game.load.image('testweapon', 'assets/sprites/testweapon.png')
+    game.load.audio('music', 'assets/audio/music/The Elder Scrolls V Skyrim - Battle Music [REMASTERED].mp3');
 
   }
 
@@ -25,6 +26,10 @@ window.onload = function() {
     map.addTilesetImage('Desert', 'tiles');
     layer = map.createLayer('Ground')
     layer.resizeWorld();
+
+    music = game.add.audio('music');
+      music.play('', 0, 1, true);
+      music.volume = 1;
 
     player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
