@@ -11,6 +11,7 @@ window.onload = function() {
   var playerHealth = 100;
   var orcWave = 5;
   var skeletonWave = 2;
+  var orcAttack = false;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -41,6 +42,7 @@ window.onload = function() {
     player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
+    player.enableBody = true;
     game.camera.follow(player);
     player.anchor.setTo(0.5,0.5);
     player.animations.add('left', [118, 119, 120, 121, 122, 123, 124, 125], 10, true);
@@ -56,9 +58,10 @@ window.onload = function() {
     weapon.bullerRotateToVelocity = true;
     weapon.trackSprite(player);
 
-    orcs = game.add.group();
+    /*orcs = game.add.group();
+    game.physics.arcade.enable(orcs);
     orcs.enableBody = true;
-    spawnOrcWave(orcWave);
+    spawnOrcWave(orcWave);*/
 
     skeletons = game.add.group();
     skeletons.enableBody = true;
@@ -87,7 +90,7 @@ window.onload = function() {
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
     //game.physics.arcade.collide(orcs);
-    game.physics.arcade.collide(player, orcs, orcContact);
+    /*game.physics.arcade.collide(player, orcs, orcContact);*/
     game.physics.arcade.collide(player, skeletons, skeletonContact);
 
 
@@ -119,7 +122,7 @@ window.onload = function() {
       player.frame = 130;
       }
 
-      if (orc.x > player.x + 1) {
+      /*if (orc.x > player.x + 1) {
         orc.x -= 2;
         orc.animations.play('left');
       } else if (orc.x < player.x - 1) {
@@ -136,19 +139,35 @@ window.onload = function() {
         orc.y -= 2;
       } else if (orc.y < player.y - 1) {
         orc.y += 2;
-      }
+      }*/
 
       if (skeleton.x > player.x + 200) {
         skeleton.x -= 3;
         skeleton.animations.play('left');
+        /*if (skeleton.x < player.x + 201 && player.x < skeleton.x) {
+          skeleton.animations.stop();
+          skeleton.frame = 117;
+        }*/
       } else if (skeleton.x < player.x - 200) {
         skeleton.x += 3;
         skeleton.animations.play('right');
+        /*if (skeleton.x > player.x - 201 && player.x > skeleton.x) {
+          skeleton.animations.stop();
+          skeleton.frame = 143;
+        }*/
       } else {
         if (skeleton.y > player.y) {
           skeleton.animations.play('up');
+          /*if (skeleton.y < player.y + 201 && player.y < skeleton.y) {
+            skeleton.animations.stop();
+            skeleton.frame = 104;
+          }*/
         } else {
           skeleton.animations.play('down');
+          /*if (skeleton.y > player.y - 201 && player.y > skeleton.y) {
+            skeleton.animations.stop();
+            skeleton.frame = 130;
+          }*/
         }
       }
       if (skeleton.y > player.y + 200) {
@@ -156,6 +175,20 @@ window.onload = function() {
       } else if (skeleton.y < player.y - 200) {
         skeleton.y += 3;
       }
+
+      if (skeleton.x > player.x - 201 && player.x > skeleton.x) {
+        skeleton.animations.stop();
+        skeleton.frame = 143;
+      } else if (skeleton.x < player.x + 201 && player.x < skeleton.x) {
+        skeleton.animations.stop();
+        skeleton.frame = 117;
+      }/* else if (skeleton.y < player.y + 201 && player.y < skeleton.y) {
+        skeleton.animations.stop();
+        skeleton.frame = 104;
+      } else if (skeleton.y > player.y - 201 && player.y > skeleton.y) {
+        skeleton.animations.stop();
+        skeleton.frame = 130;
+      }*/
 
 
   }
@@ -168,15 +201,17 @@ window.onload = function() {
   }
 
   function spawnOrcWave(numSpawn) {
-    for (var i = 0; i < numSpawn; i++)
+    /*for (var i = 0; i < numSpawn; i++)
     {
       orc = orcs.create(player.x + Math.random() * 905 + 805, game.world.centerY, 'orc');
       orc.anchor.setTo(0.5,0.5);
+      //orc.enableBody = true;
       orc.animations.add('left', [217, 218, 219, 220, 221, 222, 223, 224], 10, true);
       orc.animations.add('right', [265, 266, 267, 268, 269, 270, 271, 272], 10, true);
-      orc.animations.add('up', [105, 106, 107, 108, 109, 110, 111, 112], 10, true);
+      orc.animations.add('up', [193, 194, 195, 196, 197, 198, 199, 200], 10, true);
       orc.animations.add('down', [241, 242, 243, 244, 245, 246, 247, 248], 10, true);
-    }
+      orc.animations.add('attackLeft', [248], 1, true);
+    }*/
   }
 
   function spawnSkeletonWave(numSpawn) {
@@ -191,8 +226,17 @@ window.onload = function() {
     }
   }
 
-  function orcContact() {
+  function orcContact(player, orc) {
     console.log("orc contact");
+    //orc.animations.stop();
+    /*while (orc.x > player.y) {
+      orcAttack = true;
+    }
+    if (orc.x > player.y) {
+      orc.animations.play('attackLeft');
+    }*/
+
+    orc.animations.play('attackLeft');
   }
 
   function skeletonContact() {
@@ -201,9 +245,9 @@ window.onload = function() {
 
   function render() {
     game.debug.body(player);
-    orcs.forEach(function(temp){
+    /*orcs.forEach(function(temp){
       game.debug.body(temp);
-    }, this);
+    }, this);*/
     skeletons.forEach(function(temp2){
       game.debug.body(temp2);
     }, this);
