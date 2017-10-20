@@ -281,5 +281,6 @@ window.onload = function() {
 
   }
 
+//284 - 282 = 2. NINJA BOX 2 CONFIRMED!!!
 
 };
