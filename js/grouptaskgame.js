@@ -89,7 +89,7 @@ window.onload = function() {
 
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
-    //game.physics.arcade.collide(orcs);
+    game.physics.arcade.collide(orcs);
     game.physics.arcade.collide(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
 
@@ -122,6 +122,7 @@ window.onload = function() {
       player.frame = 130;
       }
 
+      orcs.forEach(function(orc) {
       if (orc.x > player.x + 1) {
         orc.x -= 2;
         orc.animations.play('left');
@@ -140,6 +141,7 @@ window.onload = function() {
       } else if (orc.y < player.y - 1) {
         orc.y += 2;
       }
+    }, this);
 
       if (skeleton.x > player.x + 200) {
         skeleton.x -= 3;
