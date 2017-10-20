@@ -12,6 +12,8 @@ window.onload = function() {
   var orcWave = 5;
   var skeletonWave = 2;
   var orcAttack = false;
+  //var rounds = 0;
+  //var enemies = skeletonWave + orcWave;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -191,7 +193,10 @@ window.onload = function() {
         skeleton.animations.stop();
         skeleton.frame = 130;
       }*/
+//if (enemies < 1) {
+//rounds += 1
 
+//}
 
   }
 
@@ -244,6 +249,15 @@ window.onload = function() {
   function skeletonContact() {
     console.log("skeleton contact");
   }
+//function orcDeath(fireball, orc) {
+
+  //fireball.kill();
+  //orc.kill();
+//enemies -= 1;
+//orcs.remove(orc);
+
+//}
+
 
   function render() {
     game.debug.body(player);
