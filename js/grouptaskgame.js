@@ -78,6 +78,9 @@ window.onload = function() {
   }
 
   function update() {
+
+    orcAttack = false;
+
     //TODO: Have the shoot animation play all the way through
     /*
     if(player.animations.name == 'spellcast'){
@@ -89,8 +92,8 @@ window.onload = function() {
 
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
-    game.physics.arcade.collide(orcs);
-    game.physics.arcade.collide(player, orcs, orcContact);
+    game.physics.arcade.overlap(orcs, orcs);
+    game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
 
 
@@ -123,6 +126,7 @@ window.onload = function() {
       }
 
       orcs.forEach(function(orc) {
+    if (orcAttack == false) {
       if (orc.x > player.x + 1) {
         orc.x -= 2;
         orc.animations.play('left');
@@ -141,6 +145,9 @@ window.onload = function() {
       } else if (orc.y < player.y - 1) {
         orc.y += 2;
       }
+    } else {
+      orcAttackPLayer();
+    }
     }, this);
 
       if (skeleton.x > player.x + 200) {
@@ -207,6 +214,7 @@ window.onload = function() {
     {
       orc = orcs.create(player.x + Math.random() * 905 + 805, game.world.centerY, 'orc');
       orc.anchor.setTo(0.5,0.5);
+      game.physics.arcade.enable(orc);
       //orc.enableBody = true;
       orc.animations.add('left', [217, 218, 219, 220, 221, 222, 223, 224], 10, true);
       orc.animations.add('right', [265, 266, 267, 268, 269, 270, 271, 272], 10, true);
@@ -238,7 +246,7 @@ window.onload = function() {
       orc.animations.play('attackLeft');
     }*/
 
-    orc.animations.play('attackLeft');
+    orcAttack = true;
   }
 
   function skeletonContact() {
@@ -253,6 +261,10 @@ window.onload = function() {
     skeletons.forEach(function(temp2){
       game.debug.body(temp2);
     }, this);
+  }
+
+  function orcAttackPLayer() {
+
   }
 
 
