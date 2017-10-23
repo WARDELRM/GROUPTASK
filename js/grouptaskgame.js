@@ -11,7 +11,7 @@ window.onload = function() {
   var playerHealth = 100;
   var orcWave = 5;
   var skeletonWave = 2;
-  var orcAttack = false;
+  //var orcAttack = false;
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
   var potionchance = 20;
@@ -97,7 +97,7 @@ window.onload = function() {
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
     game.physics.arcade.overlap(orcs, orcs);
-    game.physics.arcade.overlap(player, orcs, orcContact);  
+    game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
 
 
@@ -222,6 +222,7 @@ window.onload = function() {
       orc = orcs.create(player.x + Math.random() * 905 + 805, game.world.centerY, 'orc');
       orc.anchor.setTo(0.5,0.5);
       game.physics.arcade.enable(orc);
+      orcAttack = false;
       //orc.enableBody = true;
       orc.animations.add('left', [217, 218, 219, 220, 221, 222, 223, 224], 10, true);
       orc.animations.add('right', [265, 266, 267, 268, 269, 270, 271, 272], 10, true);
