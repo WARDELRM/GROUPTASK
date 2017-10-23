@@ -95,7 +95,7 @@ window.onload = function() {
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
     game.physics.arcade.overlap(orcs, orcs);
-    game.physics.arcade.overlap(player, orcs, orcContact);
+    game.physics.arcade.overlap(player, orcs, orcContact);  
     game.physics.arcade.collide(player, skeletons, skeletonContact);
 
 
@@ -250,8 +250,9 @@ window.onload = function() {
     if (orc.x > player.y) {
       orc.animations.play('attackLeft');
     }*/
-
-    orcAttack = true;
+    orcs.forEach(function(orc) {
+      orcAttack = true;
+    }, this);
   }
 
   function skeletonContact() {
@@ -281,6 +282,5 @@ window.onload = function() {
 
   }
 
-//284 - 282 = 2. NINJA BOX 2 CONFIRMED!!!
 
 };
