@@ -15,7 +15,7 @@ window.onload = function() {
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
   var potionchance = 20;
-  var potioncheck = false;  
+  var potioncheck = false;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -282,6 +282,11 @@ window.onload = function() {
   function orcAttackPLayer() {
 
   }
+function potionCreate() {
+
+
+}
+
 
 //284 - 282 = 2. NINJA BOX 2 CONFIRMED!!!
 
