@@ -97,7 +97,7 @@ window.onload = function() {
     //Collision events
     //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
     game.physics.arcade.overlap(orcs, orcs);
-    game.physics.arcade.overlap(player, orcs, orcContact);  
+    game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
 
 
@@ -284,6 +284,12 @@ window.onload = function() {
 
   }
 function potionCreate() {
+if (game.rnd.integerInRange(0, 100) < potionchance) {
+
+
+}
+
+}
 
 
 }
