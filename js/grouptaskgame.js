@@ -14,6 +14,8 @@ window.onload = function() {
   var orcAttack = false;
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
+  var potionchance = 20;
+  var potioncheck = false;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -281,6 +283,11 @@ window.onload = function() {
   function orcAttackPLayer() {
 
   }
+function potionCreate() {
+
+
+}
+
 
 
 };
