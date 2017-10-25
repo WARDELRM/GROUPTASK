@@ -284,16 +284,14 @@ window.onload = function() {
   function orcAttackPLayer() {
 
   }
-function potionCreate() {
-if (game.rnd.integerInRange(0, 100) < potionchance) {
+
+  function potionCreate() {
+    if (game.rnd.integerInRange(0, 100) < potionchance) {
 
 
-}
+    }
+  }
 
-}
-
-
-}
 
 
 
