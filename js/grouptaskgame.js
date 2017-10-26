@@ -9,6 +9,7 @@ window.onload = function() {
   var skeleton;
   var moveKeys;
   var playerHealth = 100;
+  var healthtext;
   var orcWave = 5;
   var skeletonWave = 2;
   //var orcAttack = false;
@@ -26,6 +27,7 @@ window.onload = function() {
     game.load.image('testweapon', 'assets/sprites/testweapon.png');
     game.load.audio('music', 'assets/audio/music/The Elder Scrolls V Skyrim - Battle Music [REMASTERED].mp3');
     game.load.audio('testfireball', 'assets/audio/sounds/testfireball.mp3');
+    game.load.image('Hpotion', 'assets/sprites/objects/potion sprite.png');
 
   }
 
@@ -45,7 +47,7 @@ window.onload = function() {
 
     player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
-    player.body.collideWorldBounds = true;
+    player.body.ideWorldBounds = true;
     player.enableBody = true;
     game.camera.follow(player);
     player.anchor.setTo(0.5,0.5);
@@ -79,6 +81,9 @@ window.onload = function() {
         'right': Phaser.KeyCode.D
       }
     );
+
+    healthext = game.add.text(16, game.world.height-200, 'lives: '+ lives, {fill: 'red'});
+
   }
 
   function update() {
@@ -99,6 +104,7 @@ window.onload = function() {
     game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
+    game.physics.arcade.overlap(player, Hpotion, potionKill);
 
 
     if(moveKeys.left.isDown) {
@@ -287,11 +293,14 @@ window.onload = function() {
 
   function potionCreate() {
     if (game.rnd.integerInRange(0, 100) < potionchance) {
-//TODO: line of code to add potion sprite 
-
+//TODO: line of code to add potion sprite
+game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
     }
   }
+function potionKill(player, Hpotion) {
+Hpotion.kill
 
+}
 
 
 
