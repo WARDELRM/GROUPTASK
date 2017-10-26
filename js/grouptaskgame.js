@@ -253,9 +253,8 @@ window.onload = function() {
     if (orc.x > player.y) {
       orc.animations.play('attackLeft');
     }*/
-    orcs.forEach(function(orc) {
-      orcAttack = true;
-    }, this);
+    
+    orcAttack = true;
   }
 
   function skeletonContact() {
