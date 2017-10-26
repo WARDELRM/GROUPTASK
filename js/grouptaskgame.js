@@ -11,6 +11,7 @@ window.onload = function() {
   var playerHealth = 100;
   var healthtext;
   var orcWave = 5;
+  var lives = 5; //sorry aiden but the game wouldn't work without lives declared
   var skeletonWave = 2;
   //var orcAttack = false;
   //var rounds = 0;
@@ -104,7 +105,7 @@ window.onload = function() {
     game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
-    game.physics.arcade.overlap(player, Hpotion, potionKill);
+    //game.physics.arcade.overlap(player, Hpotion, potionKill); sorry, this was also not working
 
 
     if(moveKeys.left.isDown) {
