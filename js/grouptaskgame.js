@@ -259,7 +259,7 @@ window.onload = function() {
     if (orc.x > player.y) {
       orc.animations.play('attackLeft');
     }*/
-    
+
     orcAttack = true;
   }
 
@@ -293,11 +293,11 @@ window.onload = function() {
   function potionCreate() {
     if (game.rnd.integerInRange(0, 100) < potionchance) {
 //TODO: line of code to add potion sprite
-<<<<<<< HEAD
+//<<<<<<< HEAD
 game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
-=======
+//=======
 
->>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
+//>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
     }
   }
 function potionKill(player, Hpotion) {
