@@ -287,7 +287,7 @@ window.onload = function() {
 
   function potionCreate() {
     if (game.rnd.integerInRange(0, 100) < potionchance) {
-
+//TODO: line of code to add potion sprite 
 
     }
   }
