@@ -11,7 +11,7 @@ window.onload = function() {
   var playerHealth = 100;
   var healthtext;
   var orcWave = 5;
-  var lives = 5; //sorry aiden but the game wouldn't work without lives declared
+  var lives = 5;
   var skeletonWave = 2;
   //var orcAttack = false;
   //var rounds = 0;
@@ -83,12 +83,14 @@ window.onload = function() {
       }
     );
 
-    healthext = game.add.text(16, game.world.height-200, 'lives: '+ lives, {fill: 'red'});
+    healthtext = game.add.text(player.x, player.y, 'lives: '+ lives, {fill: 'red'});
+    //healthtext.fixedToCamera = true;
 
   }
 
   function update() {
-
+    healthtext.x = player.x - 375;
+    healthtext.y = player.y + 250;
     orcAttack = false;
 
     //TODO: Have the shoot animation play all the way through
