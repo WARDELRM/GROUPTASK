@@ -83,14 +83,14 @@ window.onload = function() {
       }
     );
 
-    healthtext = game.add.text(player.x, player.y, 'lives: '+ lives, {fill: 'red'});
-    //healthtext.fixedToCamera = true;
+    healthtext = game.add.text(50,40,'Lives: '+ lives, {fill: 'red'});
+    healthtext.fixedToCamera = true;
 
   }
 
   function update() {
-    healthtext.x = player.x - 375;
-    healthtext.y = player.y + 250;
+    //healthtext.x = player.x - 375;
+    //healthtext.y = player.y + 250;
     orcAttack = false;
 
     //TODO: Have the shoot animation play all the way through
