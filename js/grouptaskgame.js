@@ -138,6 +138,8 @@ window.onload = function() {
       player.frame = 130;
       }
 
+      //orcAttack = false;
+
       orcs.forEach(function(orc) {
     if (orcAttack == false) {
       if (orc.x > player.x + 1) {
@@ -231,7 +233,10 @@ window.onload = function() {
       orc = orcs.create(player.x + Math.random() * 905 + 805, game.world.centerY, 'orc');
       orc.anchor.setTo(0.5,0.5);
       game.physics.arcade.enable(orc);
-      orcAttack = false;
+      //var orcAttack = false;
+      orcs.forEach(function(orc) {
+        var orcAttack = false;
+      }, this);
       //orc.enableBody = true;
       orc.animations.add('left', [217, 218, 219, 220, 221, 222, 223, 224], 10, true);
       orc.animations.add('right', [265, 266, 267, 268, 269, 270, 271, 272], 10, true);
@@ -278,6 +283,19 @@ window.onload = function() {
 
 //}
 
+  function potionCreate() {
+    if (game.rnd.integerInRange(0, 100) < potionchance) {
+      //TODO: line of code to add potion sprite
+      //<<<<<<< HEAD
+      game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
+      //=======
+
+      //>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
+    }
+  }
+  function potionKill(player, Hpotion) {
+    Hpotion.kill
+  }
 
   function render() {
     game.debug.body(player);
@@ -293,20 +311,7 @@ window.onload = function() {
 
   }
 
-  function potionCreate() {
-    if (game.rnd.integerInRange(0, 100) < potionchance) {
-//TODO: line of code to add potion sprite
-//<<<<<<< HEAD
-game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
-//=======
 
-//>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
-    }
-  }
-function potionKill(player, Hpotion) {
-Hpotion.kill
-
-}
 
 
 
