@@ -290,7 +290,7 @@ window.onload = function() {
   }
   function potionKill(player, Hpotion) {
     Hpotion.kill
-  lives++1   
+    lives += 1;
   }
 
   function render() {
