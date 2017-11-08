@@ -25,10 +25,10 @@ window.onload = function() {
     game.load.spritesheet('skeleton', 'assets/sprites/spritesheets/skeleton.png', 64, 64);
     game.load.tilemap('arena', 'assets/tilemaps/maps/arena2.0.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/tiles/deserttiles.png');
-    game.load.image('testweapon', 'assets/sprites/testweapon.png');
+    game.load.image('fireball', 'assets/sprites/objects/Fireball V 0.1.png');
+    game.load.image('Hpotion', 'assets/sprites/objects/potion sprite.png');
     game.load.audio('music', 'assets/audio/music/The Elder Scrolls V Skyrim - Battle Music [REMASTERED].mp3');
     game.load.audio('testfireball', 'assets/audio/sounds/testfireball.mp3');
-    game.load.image('Hpotion', 'assets/sprites/objects/potion sprite.png');
 
   }
 
@@ -58,7 +58,7 @@ window.onload = function() {
     player.animations.add('down', [131, 132, 133, 134, 135, 136, 137, 138], 10, true);
     player.animations.add('spellcast', [27, 28, 29, 30, 31, 32], 10, true);
 
-    weapon = game.add.weapon(5, 'testweapon');
+    weapon = game.add.weapon(5, 'fireball');
     weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
     weapon.bulletSpeed = 300;
     weapon.fireRate = 500;
@@ -232,7 +232,7 @@ window.onload = function() {
     {
       orc = orcs.create(player.x + Math.random() * 905 + 805, game.world.centerY, 'orc');
       orc.anchor.setTo(0.5,0.5);
-      game.physics.arcade.enable(orc);;
+      game.physics.arcade.enable(orc);
       orc.animations.add('left', [217, 218, 219, 220, 221, 222, 223, 224], 10, true);
       orc.animations.add('right', [265, 266, 267, 268, 269, 270, 271, 272], 10, true);
       orc.animations.add('up', [193, 194, 195, 196, 197, 198, 199, 200], 10, true);
