@@ -42,9 +42,9 @@ window.onload = function() {
     layer = map.createLayer('Ground')
     layer.resizeWorld();
 
-    music = game.add.audio('music');
+    /*music = game.add.audio('music');
       music.play('', 0, 1, true);
-      music.volume = 0.1;
+      music.volume = 0.1;*/
 
     player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
@@ -83,14 +83,12 @@ window.onload = function() {
       }
     );
 
-    healthtext = game.add.text(50,40,'Lives: '+ lives, {fill: 'red'});
-    healthtext.fixedToCamera = true;
+    healthText = game.add.text(50,40,'Lives: '+ lives, {fill: 'red'});
+    healthText.fixedToCamera = true;
 
   }
 
   function update() {
-    //healthtext.x = player.x - 375;
-    //healthtext.y = player.y + 250;
     orcAttack = false;
 
     //TODO: Have the shoot animation play all the way through
@@ -103,7 +101,7 @@ window.onload = function() {
     */
 
     //Collision events
-    //game.physics.arcade.overlap(player fireballs hitting a specific enemy type)
+    game.physics.arcade.overlap(weapon.bullets, orcs, orcDamage);
     game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
@@ -138,10 +136,8 @@ window.onload = function() {
       player.frame = 130;
       }
 
-      //orcAttack = false;
-
-      orcs.forEach(function(orc) {
-    if (/*orcAttack == false || */orc.x - 32 > player.x + 32 || orc.x + 32 < player.x - 32 || orc.y - 32 > player.y + 32 || orc.y + 32 < player.y - 32) {
+  orcs.forEach(function(orc) {
+    if (orc.x - 32 > player.x + 32 || orc.x + 32 < player.x - 32 || orc.y - 32 > player.y + 32 || orc.y + 32 < player.y - 32) {
       if (orc.x > player.x + 1) {
         orc.x -= 2;
         orc.animations.play('left');
@@ -161,9 +157,11 @@ window.onload = function() {
         orc.y += 2;
       }
     } else {
-      orcAttackPLayer();
+      orcs.forEach(function(orc){
+        orcAttackPLayer();
+      }, this);
     }
-    }, this);
+  }, this);
 
       if (skeleton.x > player.x + 200) {
         skeleton.x -= 3;
@@ -220,6 +218,12 @@ window.onload = function() {
 
   }
 
+  function orcDamage(weapon, orc) {
+    weapon.kill;
+    orc.kill;
+    orcs.remove(orc);
+  }
+
   function spellCast() {
     player.animations.play('spellcast');
     /*fireballSound = game.add.audio('testfireball');
@@ -237,7 +241,10 @@ window.onload = function() {
       orc.animations.add('right', [265, 266, 267, 268, 269, 270, 271, 272], 10, true);
       orc.animations.add('up', [193, 194, 195, 196, 197, 198, 199, 200], 10, true);
       orc.animations.add('down', [241, 242, 243, 244, 245, 246, 247, 248], 10, true);
-      orc.animations.add('attackLeft', [248], 1, true);
+      orc.animations.add('attackUp', [529, 532, 535, 538, 541, 544], 10, true);
+      orc.animations.add('attackDown', [673, 676, 679, 682, 685, 688], 10, true);
+      orc.animations.add('attackLeft', [601, 604, 607, 610, 613, 616], 10, true);
+      orc.animations.add('attackRight', [745, 748, 751, 754, 757, 760], 10, true);
     }
   }
 
@@ -255,15 +262,27 @@ window.onload = function() {
 
   function orcContact(player, orc) {
     console.log("orc contact");
-    //orc.animations.stop();
-    /*while (orc.x > player.y) {
-      orcAttack = true;
-    }
-    if (orc.x > player.y) {
-      orc.animations.play('attackLeft');
-    }*/
 
-    //orcAttack = true;
+    if (orc.x > player.x) {
+      orc.animations.play('attackLeft');
+      lives -= 1;
+      healthText.text = 'lives: ' + lives;
+      if (lives < 1) {
+        gameOver();
+      }
+    } else if (orc.x < player.x) {
+      orc.animations.play('attackRight');
+      lives -= 1;
+      healthText.text = 'lives: ' + lives;
+      if (lives < 1) {
+        gameOver();
+      }
+    }
+  }
+
+  function gameOver() {
+    //game.paused = true;
+    console.log("RIP");
   }
 
   function skeletonContact() {
@@ -288,6 +307,7 @@ window.onload = function() {
       //>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
     }
   }
+
   function potionKill(player, Hpotion) {
     Hpotion.kill
     lives += 1;
@@ -304,7 +324,7 @@ window.onload = function() {
   }
 
   function orcAttackPLayer() {
-    orc.animations.stop();
+    //orc.animations.play('attackLeft');
   }
 
 
