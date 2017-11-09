@@ -163,33 +163,18 @@ window.onload = function() {
     }
   }, this);
 
+    if (skeleton.x > player.x + 200 || skeleton.x < player.x - 200 || skeleton.y > player.y + 200 || skeleton.y < player.y - 200) {
       if (skeleton.x > player.x + 200) {
         skeleton.x -= 3;
         skeleton.animations.play('left');
-        if (skeleton.x < player.x + 201 && player.x < skeleton.x) {
-          skeleton.animations.stop();
-          skeleton.frame = 117;
-        }
       } else if (skeleton.x < player.x - 200) {
         skeleton.x += 3;
         skeleton.animations.play('right');
-        if (skeleton.x > player.x - 201 && player.x > skeleton.x) {
-          skeleton.animations.stop();
-          skeleton.frame = 143;
-        }
       } else {
         if (skeleton.y > player.y) {
           skeleton.animations.play('up');
-          /*if (skeleton.y < player.y + 201 && player.y < skeleton.y) {
-            skeleton.animations.stop();
-            skeleton.frame = 104;
-          }*/
         } else {
           skeleton.animations.play('down');
-          /*if (skeleton.y > player.y - 201 && player.y > skeleton.y) {
-            skeleton.animations.stop();
-            skeleton.frame = 130;
-          }*/
         }
       }
       if (skeleton.y > player.y + 200) {
@@ -197,6 +182,9 @@ window.onload = function() {
       } else if (skeleton.y < player.y - 200) {
         skeleton.y += 3;
       }
+    } else {
+      skeletonAttack();
+    }
 
       /*if (skeleton.x > player.x - 201 && player.x > skeleton.x) {
         skeleton.animations.stop();
@@ -278,6 +266,10 @@ window.onload = function() {
         gameOver();
       }
     }
+  }
+
+  function skeletonAttack() {
+    console.log("skeleton attack");
   }
 
   function gameOver() {
