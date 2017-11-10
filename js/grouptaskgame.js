@@ -26,6 +26,7 @@ window.onload = function() {
     game.load.tilemap('arena', 'assets/tilemaps/maps/arena2.0.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/tiles/deserttiles.png');
     game.load.image('fireball', 'assets/sprites/objects/Fireball V 0.1.png');
+    game.load.image('arrow', 'assets/sprites/objects/arrow.png');
     game.load.image('Hpotion', 'assets/sprites/objects/potion sprite.png');
     game.load.audio('music', 'assets/audio/music/The Elder Scrolls V Skyrim - Battle Music [REMASTERED].mp3');
     game.load.audio('testfireball', 'assets/audio/sounds/testfireball.mp3');
@@ -62,7 +63,7 @@ window.onload = function() {
     weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
     weapon.bulletSpeed = 300;
     weapon.fireRate = 500;
-    weapon.bullerRotateToVelocity = true;
+    weapon.bulletRotateToVelocity = true;
     weapon.trackSprite(player);
 
     orcs = game.add.group();
@@ -73,6 +74,9 @@ window.onload = function() {
     skeletons = game.add.group();
     skeletons.enableBody = true;
     spawnSkeletonWave(skeletonWave);
+
+    skeletonArrows = game.add.group();
+    skeletonArrows.enableBody = true;
 
     moveKeys = game.input.keyboard.addKeys(
       {
@@ -163,6 +167,7 @@ window.onload = function() {
     }
   }, this);
 
+  skeletons.forEach(function(skeleton){
     if (skeleton.x > player.x + 200 || skeleton.x < player.x - 200 || skeleton.y > player.y + 200 || skeleton.y < player.y - 200) {
       if (skeleton.x > player.x + 200) {
         skeleton.x -= 3;
@@ -185,6 +190,7 @@ window.onload = function() {
     } else {
       skeletonAttack();
     }
+  }, this);
 
       /*if (skeleton.x > player.x - 201 && player.x > skeleton.x) {
         skeleton.animations.stop();
@@ -245,6 +251,8 @@ window.onload = function() {
       skeleton.animations.add('right', [144, 145, 146, 147, 148, 149, 150, 151], 10, true);
       skeleton.animations.add('up', [105, 106, 107, 108, 109, 110, 111, 112], 10, true);
       skeleton.animations.add('down', [131, 132, 133, 134, 135, 136, 137, 138], 10, true);
+      //skeleton.animations.add('shootLeft', [490], 10, true);
+      skeleton.animations.add('shootRight', [250, 251, 252, 253, 254, 255, 256, 257, 258, 259], 10, true);
     }
   }
 
@@ -270,6 +278,22 @@ window.onload = function() {
 
   function skeletonAttack() {
     console.log("skeleton attack");
+
+    skeletons.forEach(function(skeleton){
+      if (skeleton.x > player.x) {
+        //skeleton.animations.play('shootLeft');
+        skeletonShoot();
+      } else if (skeleton.x < player.x) {
+        skeleton.animations.play('shootRight');
+        skeletonShoot();
+      }
+    }, this);
+  }
+
+  function skeletonShoot() {
+    Arrow = skeletonArrows.create(skeleton.x, skeleton.y, 'arrow');
+    game.physics.arcade.moveToObject(Arrow, player, 200);
+    Arrow.RotateToVelocity = true;
   }
 
   function gameOver() {
