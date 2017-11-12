@@ -109,6 +109,7 @@ window.onload = function() {
     game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
+    game.physics.arcade.overlap(weapon.bullets, skeletons, skeletonKill);
     //game.physics.arcade.overlap(player, Hpotion, potionKill); sorry, this was also not working
 
 
@@ -217,6 +218,13 @@ window.onload = function() {
     orc.kill;
     orcs.remove(orc);
   }
+
+function skeletonKill(weapon, skeleton) {
+weapon.kill();
+skeleton.kill();
+skeletons.remove(skeleton);
+
+}
 
   function spellCast() {
     player.animations.play('spellcast');
