@@ -7,13 +7,13 @@ window.onload = function() {
   var player;
   var orc;
   var skeleton;
+  var skeletonNextShot = 0;
   var moveKeys;
   var playerHealth = 100;
   var healthtext;
   var orcWave = 5;
   var lives = 5;
-  var skeletonWave = 2;
-  //var orcAttack = false;
+  var skeletonWave = 1;
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
   var potionchance = 20;
@@ -43,9 +43,9 @@ window.onload = function() {
     layer = map.createLayer('Ground')
     layer.resizeWorld();
 
-    /*music = game.add.audio('music');
-      music.play('', 0, 1, true);
-      music.volume = 0.1;*/
+    music = game.add.audio('music');
+    music.play('', 0, 1, true);
+    music.volume = 0.1;
 
     player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
@@ -192,19 +192,7 @@ window.onload = function() {
     }
   }, this);
 
-      /*if (skeleton.x > player.x - 201 && player.x > skeleton.x) {
-        skeleton.animations.stop();
-        skeleton.frame = 143;
-      } else if (skeleton.x < player.x + 201 && player.x < skeleton.x) {
-        skeleton.animations.stop();
-        skeleton.frame = 117;
-      } else if (skeleton.y < player.y + 201 && player.y < skeleton.y) {
-        skeleton.animations.stop();
-        skeleton.frame = 104;
-      } else if (skeleton.y > player.y - 201 && player.y > skeleton.y) {
-        skeleton.animations.stop();
-        skeleton.frame = 130;
-      }*/
+
 //if (enemies < 1) {
 //rounds += 1
 
@@ -213,8 +201,8 @@ window.onload = function() {
   }
 
   function orcDamage(weapon, orc) {
-    weapon.kill;
-    orc.kill;
+    weapon.kill();
+    orc.kill();
     orcs.remove(orc);
   }
 
@@ -251,7 +239,7 @@ window.onload = function() {
       skeleton.animations.add('right', [144, 145, 146, 147, 148, 149, 150, 151], 10, true);
       skeleton.animations.add('up', [105, 106, 107, 108, 109, 110, 111, 112], 10, true);
       skeleton.animations.add('down', [131, 132, 133, 134, 135, 136, 137, 138], 10, true);
-      //skeleton.animations.add('shootLeft', [490], 10, true);
+      skeleton.animations.add('shootLeft', [224, 225, 226, 227, 228, 229, 230, 231, 232, 233], 10, true);
       skeleton.animations.add('shootRight', [250, 251, 252, 253, 254, 255, 256, 257, 258, 259], 10, true);
     }
   }
@@ -281,19 +269,24 @@ window.onload = function() {
 
     skeletons.forEach(function(skeleton){
       if (skeleton.x > player.x) {
-        //skeleton.animations.play('shootLeft');
-        skeletonShoot();
+        if(game.time.now > skeletonNextShot){
+          skeleton.animations.play('shootLeft');
+          skeletonShoot();
+          skeletonNextShot = game.time.now + 1000;
+        }
       } else if (skeleton.x < player.x) {
-        skeleton.animations.play('shootRight');
-        skeletonShoot();
+        if(game.time.now > skeletonNextShot){
+          skeleton.animations.play('shootRight');
+          skeletonShoot();
+          skeletonNextShot = game.time.now + 1000;
+        }
       }
     }, this);
   }
 
   function skeletonShoot() {
     Arrow = skeletonArrows.create(skeleton.x, skeleton.y, 'arrow');
-    game.physics.arcade.moveToObject(Arrow, player, 200);
-    Arrow.RotateToVelocity = true;
+    Arrow.rotation = game.physics.arcade.moveToObject(Arrow, player, 200);
   }
 
   function gameOver() {
