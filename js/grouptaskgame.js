@@ -107,6 +107,7 @@ window.onload = function() {
     //Collision events
     game.physics.arcade.overlap(weapon.bullets, orcs, orcDamage);
     game.physics.arcade.overlap(orcs, orcs);
+    game.physics.arcade.overlap(player, skeletonArrows, arrowDamage);
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
     //game.physics.arcade.overlap(player, Hpotion, potionKill); sorry, this was also not working
@@ -206,6 +207,13 @@ window.onload = function() {
     orcs.remove(orc);
   }
 
+  function arrowDamage() {
+    Arrow.kill();
+    skeletonArrows.remove(Arrow);
+    lives -= 1;
+    healthText.text = 'lives: ' + lives;
+  }
+
   function spellCast() {
     player.animations.play('spellcast');
     /*fireballSound = game.add.audio('testfireball');
@@ -286,7 +294,7 @@ window.onload = function() {
 
   function skeletonShoot() {
     Arrow = skeletonArrows.create(skeleton.x, skeleton.y, 'arrow');
-    Arrow.rotation = game.physics.arcade.moveToObject(Arrow, player, 200);
+    Arrow.rotation = game.physics.arcade.moveToObject(Arrow, player, 300);
   }
 
   function gameOver() {
@@ -320,6 +328,7 @@ window.onload = function() {
   function potionKill(player, Hpotion) {
     Hpotion.kill
     lives += 1;
+    healthText.text = 'lives: ' + lives;
   }
 
   function render() {
