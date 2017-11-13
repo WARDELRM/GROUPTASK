@@ -326,7 +326,7 @@ skeletons.remove(skeleton);
   }
 
   function potionKill(player, Hpotion) {
-    Hpotion.kill
+    Hpotion.kill();
     lives += 1;
   }
 
