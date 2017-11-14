@@ -8,11 +8,12 @@ window.onload = function() {
   var orc;
   var skeleton;
   var skeletonNextShot = 0;
+  var orcNextDamage = 0;
   var moveKeys;
   var playerHealth = 100;
   var healthtext;
   var orcWave = 5;
-  var lives = 5;
+  var lives = 10;
   var skeletonWave = 1;
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
@@ -95,15 +96,6 @@ window.onload = function() {
   function update() {
     orcAttack = false;
 
-    //TODO: Have the shoot animation play all the way through
-    /*
-    if(player.animations.name == 'spellcast'){
-      if(player.animations.isPlaying){
-        console.log(player.animations.name);
-      }
-    }
-    */
-
     //Collision events
     game.physics.arcade.overlap(weapon.bullets, orcs, orcDamage);
     game.physics.arcade.overlap(orcs, orcs);
@@ -147,21 +139,25 @@ window.onload = function() {
       if (orc.x > player.x + 1) {
         orc.x -= 2;
         orc.animations.play('left');
-      } else if (orc.x < player.x - 1) {
+        }
+        else if (orc.x < player.x - 1) {
         orc.x += 2;
         orc.animations.play('right');
-      } else {
+        }
+        else {
         if (orc.y > player.y) {
           orc.animations.play('up');
-        } else {
+          }
+          else {
           orc.animations.play('down');
+          }
         }
-      }
       if (orc.y > player.y + 1) {
         orc.y -= 2;
-      } else if (orc.y < player.y - 1) {
+        }
+        else if (orc.y < player.y - 1) {
         orc.y += 2;
-      }
+        }
     } else {
       orcs.forEach(function(orc){
         orcAttackPLayer();
@@ -208,21 +204,23 @@ window.onload = function() {
     orcs.remove(orc);
   }
 
-<<<<<<< HEAD
   function arrowDamage() {
-    Arrow.kill();
-    skeletonArrows.remove(Arrow);
-    lives -= 1;
-    healthText.text = 'lives: ' + lives;
+    if (Arrow.x > player.x - 32 || Arrow.x < player.x + 32 || Arrow.y > player.y - 32 || Arrow.y < player.y + 32) {
+      Arrow.kill();
+      skeletonArrows.remove(Arrow);
+      lives -= 1;
+      healthText.text = 'lives: ' + lives;
+      if (lives < 1) {
+        gameOver();
+      }
+    }
   }
-=======
-function skeletonKill(weapon, skeleton) {
-weapon.kill();
-skeleton.kill();
-skeletons.remove(skeleton);
 
-}
->>>>>>> e11eaf7e6a17d23ad62e82215f27cb7806c3f342
+  function skeletonKill(weapon, skeleton) {
+    weapon.kill();
+    skeleton.kill();
+    skeletons.remove(skeleton);
+  }
 
   function spellCast() {
     player.animations.play('spellcast');
@@ -266,18 +264,24 @@ skeletons.remove(skeleton);
     console.log("orc contact");
 
     if (orc.x > player.x) {
-      orc.animations.play('attackLeft');
-      lives -= 1;
-      healthText.text = 'lives: ' + lives;
-      if (lives < 1) {
-        gameOver();
+      if (game.time.now > orcNextDamage) {
+        orc.animations.play('attackLeft');
+        lives -= 1;
+        healthText.text = 'lives: ' + lives;
+        orcNextDamage = game.time.now + 1000;
+        if (lives < 1) {
+          gameOver();
+        }
       }
     } else if (orc.x < player.x) {
-      orc.animations.play('attackRight');
-      lives -= 1;
-      healthText.text = 'lives: ' + lives;
-      if (lives < 1) {
-        gameOver();
+      if (game.time.now > orcNextDamage) {
+        orc.animations.play('attackRight');
+        lives -= 1;
+        healthText.text = 'lives: ' + lives;
+        orcNextDamage = game.time.now + 1000;
+        if (lives < 1) {
+          gameOver();
+        }
       }
     }
   }
