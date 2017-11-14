@@ -12,12 +12,13 @@ window.onload = function() {
   var playerHealth = 100;
   var healthtext;
   var orcWave = 5;
-  var lives = 5;
+  var lives = 10;
   var skeletonWave = 1;
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
-  var potionchance = 20;
+  var potionchance = 100;
   var potioncheck = false;
+  var Hpotion;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -110,7 +111,7 @@ window.onload = function() {
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
     game.physics.arcade.overlap(weapon.bullets, skeletons, skeletonKill);
-    //game.physics.arcade.overlap(player, Hpotion, potionKill); sorry, this was also not working
+    game.physics.arcade.overlap(player, Hpotion, potionKill);
 
 
     if(moveKeys.left.isDown) {
@@ -211,7 +212,7 @@ function skeletonKill(weapon, skeleton) {
 weapon.kill();
 skeleton.kill();
 skeletons.remove(skeleton);
-
+potionCreate();
 }
 
   function spellCast() {
@@ -318,7 +319,7 @@ skeletons.remove(skeleton);
     if (game.rnd.integerInRange(0, 100) < potionchance) {
       //TODO: line of code to add potion sprite
       //<<<<<<< HEAD
-      game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
+      Hpotion = game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
       //=======
 
       //>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
@@ -326,7 +327,9 @@ skeletons.remove(skeleton);
   }
 
   function potionKill(player, Hpotion) {
+    console.log("got potion");
     Hpotion.kill();
+    player.kill();
     lives += 1;
   }
 
