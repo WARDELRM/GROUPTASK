@@ -261,8 +261,6 @@ window.onload = function() {
   }
 
   function orcContact(player, orc) {
-    console.log("orc contact");
-
     if (orc.x > player.x) {
       if (game.time.now > orcNextDamage) {
         orc.animations.play('attackLeft');
@@ -287,8 +285,6 @@ window.onload = function() {
   }
 
   function skeletonAttack() {
-    console.log("skeleton attack");
-
     skeletons.forEach(function(skeleton){
       if (skeleton.x > player.x) {
         if(game.time.now > skeletonNextShot){
