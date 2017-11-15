@@ -106,12 +106,13 @@ window.onload = function() {
     */
 
     //Collision events
+    game.physics.arcade.overlap(player, Hpotion, potionKill);
     game.physics.arcade.overlap(weapon.bullets, orcs, orcDamage);
     game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, orcs, orcContact);
     game.physics.arcade.collide(player, skeletons, skeletonContact);
     game.physics.arcade.overlap(weapon.bullets, skeletons, skeletonKill);
-    game.physics.arcade.overlap(player, Hpotion, potionKill);
+
 
 
     if(moveKeys.left.isDown) {
@@ -321,7 +322,8 @@ potionCreate();
       //<<<<<<< HEAD
       Hpotion = game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
       //=======
-
+game.physics.arcade.enable(Hpotion);
+Hpotion.enableBody = true;
       //>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
     }
   }
@@ -329,8 +331,8 @@ potionCreate();
   function potionKill(player, Hpotion) {
     console.log("got potion");
     Hpotion.kill();
-    player.kill();
     lives += 1;
+    healthText.text = 'lives: ' + lives;
   }
 
   function render() {
