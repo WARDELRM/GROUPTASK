@@ -15,10 +15,12 @@ window.onload = function() {
   var orcWave = 5;
   var lives = 10;
   var skeletonWave = 1;
-  //var rounds = 0;
-  //var enemies = skeletonWave + orcWave;
+  var round = 1;
+  var enemies;
   var potionchance = 20;
   var potioncheck = false;
+  var arrowSpeed = 300;
+  var points = 0;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -32,7 +34,7 @@ window.onload = function() {
     game.load.audio('music', 'assets/audio/music/The Elder Scrolls V Skyrim - Battle Music [REMASTERED].mp3');
     game.load.audio('testfireball', 'assets/audio/sounds/testfireball.mp3');
 
-  }
+  } // end of preload funtion
 
   function create() {
 
@@ -88,10 +90,16 @@ window.onload = function() {
       }
     );
 
-    healthText = game.add.text(50,40,'Lives: '+ lives, {fill: 'red'});
+    healthText = game.add.text(50, 40, 'Lives: ' + lives, {fill: 'red'});
     healthText.fixedToCamera = true;
 
-  }
+    roundText = game.add.text(625, 40, 'Round: ' + round, {fill: 'red'});
+    roundText.fixedToCamera = true;
+
+    pointText = game.add.text(320, 40, 'Points: ' + points, {fill: 'red'});
+    pointText.fixedToCamera = true;
+
+  } // end of create function
 
   function update() {
     orcAttack = false;
@@ -134,74 +142,85 @@ window.onload = function() {
       player.frame = 130;
       }
 
-  orcs.forEach(function(orc) {
-    if (orc.x - 32 > player.x + 32 || orc.x + 32 < player.x - 32 || orc.y - 32 > player.y + 32 || orc.y + 32 < player.y - 32) {
-      if (orc.x > player.x + 1) {
-        orc.x -= 2;
-        orc.animations.play('left');
-        }
-        else if (orc.x < player.x - 1) {
-        orc.x += 2;
-        orc.animations.play('right');
-        }
-        else {
-        if (orc.y > player.y) {
-          orc.animations.play('up');
+    orcs.forEach(function(orc) {
+      if (orc.x - 32 > player.x + 32 || orc.x + 32 < player.x - 32 || orc.y - 32 > player.y + 32 || orc.y + 32 < player.y - 32) {
+        if (orc.x > player.x + 1) {
+          orc.x -= 2;
+          orc.animations.play('left');
+          }
+          else if (orc.x < player.x - 1) {
+          orc.x += 2;
+          orc.animations.play('right');
           }
           else {
-          orc.animations.play('down');
+            if (orc.y > player.y) {
+            orc.animations.play('up');
+            }
+            else {
+            orc.animations.play('down');
+            }
           }
-        }
-      if (orc.y > player.y + 1) {
+        if (orc.y > player.y + 1) {
         orc.y -= 2;
         }
         else if (orc.y < player.y - 1) {
         orc.y += 2;
         }
-    } else {
-      orcs.forEach(function(orc){
-        orcAttackPLayer();
-      }, this);
-    }
-  }, this);
-
-  skeletons.forEach(function(skeleton){
-    if (skeleton.x > player.x + 200 || skeleton.x < player.x - 200 || skeleton.y > player.y + 200 || skeleton.y < player.y - 200) {
-      if (skeleton.x > player.x + 200) {
-        skeleton.x -= 3;
-        skeleton.animations.play('left');
-      } else if (skeleton.x < player.x - 200) {
-        skeleton.x += 3;
-        skeleton.animations.play('right');
       } else {
-        if (skeleton.y > player.y) {
-          skeleton.animations.play('up');
-        } else {
-          skeleton.animations.play('down');
-        }
+        orcs.forEach(function(orc){
+          orcAttackPLayer();
+        }, this);
       }
-      if (skeleton.y > player.y + 200) {
+    }, this);
+
+    skeletons.forEach(function(skeleton){
+      if (skeleton.x > player.x + 200 || skeleton.x < player.x - 200 || skeleton.y > player.y + 200 || skeleton.y < player.y - 200) {
+        if (skeleton.x > player.x + 200) {
+          skeleton.x -= 3;
+          skeleton.animations.play('left');
+          }
+          else if (skeleton.x < player.x - 200) {
+          skeleton.x += 3;
+          skeleton.animations.play('right');
+          }
+          else {
+            if (skeleton.y > player.y) {
+            skeleton.animations.play('up');
+            }
+            else {
+            skeleton.animations.play('down');
+            }
+          }
+        if (skeleton.y > player.y + 200) {
         skeleton.y -= 3;
-      } else if (skeleton.y < player.y - 200) {
+        }
+        else if (skeleton.y < player.y - 200) {
         skeleton.y += 3;
-      }
-    } else {
-      skeletonAttack();
+        }
+        } else {
+          skeletonAttack();
+        }
+    }, this);
+
+    enemies = orcs.total + skeletons.total;
+
+    if (enemies < 1) {
+      orcWave += 3;
+      arrowSpeed += 25;
+      spawnOrcWave(orcWave);
+      spawnSkeletonWave(skeletonWave);
+      round += 1;
+      roundText.text = 'Round: ' + round;
     }
-  }, this);
 
-
-//if (enemies < 1) {
-//rounds += 1
-
-//}
-
-  }
+  } // end of update funtion
 
   function orcDamage(weapon, orc) {
     weapon.kill();
     orc.kill();
     orcs.remove(orc);
+    points += 10;
+    pointText.text = 'Points: ' + points;
   }
 
   function arrowDamage() {
@@ -220,6 +239,8 @@ window.onload = function() {
     weapon.kill();
     skeleton.kill();
     skeletons.remove(skeleton);
+    points += 10;
+    pointText.text = 'Points: ' + points;
   }
 
   function spellCast() {
@@ -304,7 +325,7 @@ window.onload = function() {
 
   function skeletonShoot() {
     Arrow = skeletonArrows.create(skeleton.x, skeleton.y, 'arrow');
-    Arrow.rotation = game.physics.arcade.moveToObject(Arrow, player, 300);
+    Arrow.rotation = game.physics.arcade.moveToObject(Arrow, player, arrowSpeed);
   }
 
   function gameOver() {
@@ -315,14 +336,6 @@ window.onload = function() {
   function skeletonContact() {
     console.log("skeleton contact");
   }
-//function orcDeath(fireball, orc) {
-
-  //fireball.kill();
-  //orc.kill();
-//enemies -= 1;
-//orcs.remove(orc);
-
-//}
 
   function potionCreate() {
     if (game.rnd.integerInRange(0, 100) < potionchance) {
@@ -342,13 +355,13 @@ window.onload = function() {
   }
 
   function render() {
-    game.debug.body(player);
+    /*game.debug.body(player);
     orcs.forEach(function(temp){
       game.debug.body(temp);
     }, this);
     skeletons.forEach(function(temp2){
       game.debug.body(temp2);
-    }, this);
+    }, this);*/
   }
 
   function orcAttackPLayer() {
