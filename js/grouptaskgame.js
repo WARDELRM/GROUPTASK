@@ -15,20 +15,20 @@ window.onload = function() {
   var orcWave = 5;
   var lives = 10;
   var skeletonWave = 1;
-<<<<<<< HEAD
+//<<<<<<< HEAD
   //var rounds = 0;
   //var enemies = skeletonWave + orcWave;
   var potionchance = 100;
   var potioncheck = false;
   var Hpotion;
-=======
+//=======
   var round = 1;
   var enemies;
   var potionchance = 20;
   var potioncheck = false;
   var arrowSpeed = 300;
   var points = 0;
->>>>>>> fd27215b93181e7aa204804d8816269054a48043
+//>>>>>>> fd27215b93181e7aa204804d8816269054a48043
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -123,7 +123,7 @@ window.onload = function() {
   function update() {
     orcAttack = false;
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     //TODO: Have the shoot animation play all the way through
     /*
     if(player.animations.name == 'spellcast'){
@@ -136,10 +136,10 @@ window.onload = function() {
     //Collision events
     game.physics.arcade.overlap(player, Hpotion, potionKill);
     game.physics.arcade.overlap(weapon.bullets, orcs, orcDamage);
-=======
+//=======
     // Collision events
     game.physics.arcade.overlap(weapon.bullets, orcs, orcKill);
->>>>>>> fd27215b93181e7aa204804d8816269054a48043
+//>>>>>>> fd27215b93181e7aa204804d8816269054a48043
     game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, skeletonArrows, arrowDamage);
     game.physics.arcade.overlap(player, orcs, orcContact);
@@ -257,14 +257,14 @@ window.onload = function() {
     pointText.text = 'Points: ' + points;
   }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 function skeletonKill(weapon, skeleton) {
 weapon.kill();
 skeleton.kill();
 skeletons.remove(skeleton);
 potionCreate();
 }
-=======
+//=======
   function arrowDamage() {
     if (Arrow.x > player.x - 32 || Arrow.x < player.x + 32 || Arrow.y > player.y - 32 || Arrow.y < player.y + 32) {
       Arrow.kill();
@@ -285,7 +285,7 @@ potionCreate();
     points += 10;
     pointText.text = 'Points: ' + points;
   }
->>>>>>> fd27215b93181e7aa204804d8816269054a48043
+//>>>>>>> fd27215b93181e7aa204804d8816269054a48043
 
   function spellCast() {
     player.animations.play('spellcast');
