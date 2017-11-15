@@ -324,6 +324,9 @@ potionCreate();
       //=======
 game.physics.arcade.enable(Hpotion);
 Hpotion.enableBody = true;
+Hpotions = game.add.group();
+Hpotions.enableBody = true;
+
       //>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
     }
   }
