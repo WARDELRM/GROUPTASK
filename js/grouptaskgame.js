@@ -10,25 +10,18 @@ window.onload = function() {
   var skeletonNextShot = 0;
   var orcNextDamage = 0;
   var moveKeys;
-  var playerHealth = 100;
   var healthtext;
   var orcWave = 5;
-  var lives = 10;
   var skeletonWave = 1;
-//<<<<<<< HEAD
-  //var rounds = 0;
-  //var enemies = skeletonWave + orcWave;
-  var potionchance = 100;
+  var lives = 10;
   var potioncheck = false;
-  var Hpotion;
-//=======
   var round = 1;
   var enemies;
-  var potionchance = 20;
-  var potioncheck = false;
+  var potionchance = 10;
   var arrowSpeed = 300;
   var points = 0;
-//>>>>>>> fd27215b93181e7aa204804d8816269054a48043
+  var orcSpeed;
+  var welcomeScreen = 0;
 
   function preload() {
     game.load.spritesheet('wizard', 'assets/sprites/spritesheets/thewizard.png', 64, 64);
@@ -38,7 +31,9 @@ window.onload = function() {
     game.load.image('tiles', 'assets/tilemaps/tiles/deserttiles.png');
     game.load.image('fireball', 'assets/sprites/objects/Fireball V 0.1.png');
     game.load.image('arrow', 'assets/sprites/objects/arrow.png');
-    game.load.image('Hpotion', 'assets/sprites/objects/potion sprite.png');
+    game.load.image('Hpotion', 'assets/sprites/objects/potion.png');
+    game.load.image('losescreen', 'assets/sprites/objects/gameoverscreen.png');
+    game.load.image('nextbutton', 'assets/sprites/objects/next.png');
     game.load.audio('damagesound', 'assets/audio/sounds/damage.mp3');
     game.load.audio('losesound', 'assets/audio/sounds/lose.mp3');
     game.load.audio('roundsound', 'assets/audio/sounds/newround.mp3');
@@ -62,9 +57,11 @@ window.onload = function() {
     music.play('', 0, 1, true);
     music.volume = 0.1;
 
+    fireballSound = game.add.audio('fireball');
     newRoundSound = game.add.audio('roundsound');
     damageSound = game.add.audio('damagesound');
     loseSound = game.add.audio('losesound');
+    potionSound = game.add.audio('potionsound');
 
     player = game.add.sprite(game.world.centerY, game.world.centerX, 'wizard');
     game.physics.arcade.enable(player);
@@ -81,7 +78,7 @@ window.onload = function() {
     weapon = game.add.weapon(5, 'fireball');
     weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
     weapon.bulletSpeed = 300;
-    weapon.fireRate = 500;
+    weapon.fireRate = 1000;
     weapon.bulletRotateToVelocity = true;
     weapon.trackSprite(player);
 
@@ -97,8 +94,8 @@ window.onload = function() {
     skeletonArrows = game.add.group();
     skeletonArrows.enableBody = true;
 
-    Hpotions = game.add.group();
-    Hpotions.enableBody = true;
+    healthPotions = game.add.group();
+    healthPotions.enableBody = true;
 
     moveKeys = game.input.keyboard.addKeys(
       {
@@ -118,35 +115,19 @@ window.onload = function() {
     pointText = game.add.text(320, 40, 'Points: ' + points, {fill: 'red'});
     pointText.fixedToCamera = true;
 
+    gameStart();
+
   } // end of create function
 
   function update() {
-    orcAttack = false;
-
-//<<<<<<< HEAD
-    //TODO: Have the shoot animation play all the way through
-    /*
-    if(player.animations.name == 'spellcast'){
-      if(player.animations.isPlaying){
-        console.log(player.animations.name);
-      }
-    }
-    */
 
     //Collision events
-    game.physics.arcade.overlap(player, Hpotion, potionKill);
-    game.physics.arcade.overlap(weapon.bullets, orcs, orcDamage);
-//=======
-    // Collision events
+    game.physics.arcade.overlap(player, healthPotions, potionKill);
     game.physics.arcade.overlap(weapon.bullets, orcs, orcKill);
-//>>>>>>> fd27215b93181e7aa204804d8816269054a48043
-    game.physics.arcade.overlap(orcs, orcs);
     game.physics.arcade.overlap(player, skeletonArrows, arrowDamage);
     game.physics.arcade.overlap(player, orcs, orcContact);
-    game.physics.arcade.collide(player, skeletons, skeletonContact);
     game.physics.arcade.overlap(weapon.bullets, skeletons, skeletonKill);
-
-
+    game.physics.arcade.collide(player, skeletons, skeletonContact);
 
     if(moveKeys.left.isDown) {
       player.x -= 4;
@@ -249,28 +230,64 @@ window.onload = function() {
 
   } // end of update funtion
 
+  function gameStart() {
+    game.paused = true;
+    welcomeScreen = 1;
+    welcomeText = game.add.text(225, 200, "Welcome To The Arena!");
+    next = game.add.button(250, 400, 'nextbutton', nextPress);
+  }
+
+  function nextPress() {
+    welcomeScreen += 1;
+    if (welcomeScreen == 2) {
+      welcomeText.text = "King Stew Has Demanded That\nYou Take Part In His Games!";
+    }
+    else if (welcomeScreen == 3) {
+      welcomeText.text = "You Must Now Fight The\nEndless Waves Of King Stew's Minions!";
+    }
+    else if (welcomeScreen == 4) {
+      welcomeText.text = "King Stew Has Decided That\nYou Can Earn Yourself Some\nHealth Potions, But Only If You Fight\nTo Earn Them!";
+    }
+    else if (welcomeScreen == 5) {
+      welcomeText.text = "Controls:\n\nW/A/S/D = Move\n\nLeft Click = Fireball";
+    }
+    else if (welcomeScreen == 6) {
+      welcomeText.text = "Before You Begin, King Stew\nWould Like To Once Again State That His\nArena IS NOT A Ripp-Off\nOf The Elder Scrolls";
+    }
+    else if (welcomeScreen == 7) {
+      welcomeText.text = "NOW FIGHT!";
+    }
+    else {
+      welcomeText.kill();
+      next.kill();
+      game.paused = false;
+    }
+  }
+
   function orcKill(weapon, orc) {
     weapon.kill();
     orc.kill();
     orcs.remove(orc);
+    potionCreate();
     points += 10;
     pointText.text = 'Points: ' + points;
   }
 
-//<<<<<<< HEAD
-function skeletonKill(weapon, skeleton) {
-weapon.kill();
-skeleton.kill();
-skeletons.remove(skeleton);
-potionCreate();
-}
-//=======
+  function skeletonKill(weapon, skeleton) {
+    weapon.kill();
+    skeleton.kill();
+    skeletons.remove(skeleton);
+    potionCreate();
+    points += 10;
+    pointText.text = 'Points: ' + points;
+  }
+
   function arrowDamage() {
     if (Arrow.x > player.x - 32 || Arrow.x < player.x + 32 || Arrow.y > player.y - 32 || Arrow.y < player.y + 32) {
       Arrow.kill();
       skeletonArrows.remove(Arrow);
       lives -= 1;
-      healthText.text = 'lives: ' + lives;
+      healthText.text = 'Lives: ' + lives;
       damageSound.play();
       if (lives < 1) {
         gameOver();
@@ -278,26 +295,18 @@ potionCreate();
     }
   }
 
-  function skeletonKill(weapon, skeleton) {
-    weapon.kill();
-    skeleton.kill();
-    skeletons.remove(skeleton);
-    points += 10;
-    pointText.text = 'Points: ' + points;
-  }
-//>>>>>>> fd27215b93181e7aa204804d8816269054a48043
-
   function spellCast() {
     player.animations.play('spellcast');
-    fireballSound = game.add.audio('fireball');
-    fireballSound.play();
-    fireballSound.volume = 0.5;
+    if (fireballSound.isPlaying == false) {
+      fireballSound.play();
+      fireballSound.volume = 0.5;
+    }
   }
 
   function spawnOrcWave(numSpawn) {
     for (var i = 0; i < numSpawn; i++)
     {
-      orc = orcs.create(player.x + Math.random() * 905 + 805, game.world.centerY, 'orc');
+      orc = orcs.create(player.x + Math.random() * 905 + 805, player.y - Math.random() * 705 + 605, 'orc');
       orc.anchor.setTo(0.5,0.5);
       game.physics.arcade.enable(orc);
       orc.animations.add('left', [217, 218, 219, 220, 221, 222, 223, 224], 10, true);
@@ -314,7 +323,7 @@ potionCreate();
   function spawnSkeletonWave(numSpawn) {
     for (var i = 0; i < numSpawn; i++)
     {
-      skeleton = skeletons.create(player.x - Math.random() * 905 - 805, game.world.centerY, 'skeleton');
+      skeleton = skeletons.create(player.x - Math.random() * 905 - 805, player.y + Math.random() * 705 + 605, 'skeleton');
       skeleton.anchor.setTo(0.5,0.5);
       skeleton.animations.add('left', [118, 119, 120, 121, 122, 123, 124, 125], 10, true);
       skeleton.animations.add('right', [144, 145, 146, 147, 148, 149, 150, 151], 10, true);
@@ -331,7 +340,7 @@ potionCreate();
         orc.animations.play('attackLeft');
         lives -= 1;
         damageSound.play();
-        healthText.text = 'lives: ' + lives;
+        healthText.text = 'Lives: ' + lives;
         orcNextDamage = game.time.now + 1000;
         if (lives < 1) {
           gameOver();
@@ -374,8 +383,10 @@ potionCreate();
   }
 
   function gameOver() {
+    gameOverScreen = game.add.sprite(0.5, 0.5, 'losescreen');
+    gameOverScreen.fixedToCamera = true;
+    game.paused = true;
     loseSound.play();
-    //game.paused = true;
     console.log("RIP");
   }
 
@@ -385,27 +396,25 @@ potionCreate();
 
   function potionCreate() {
     if (game.rnd.integerInRange(0, 100) < potionchance) {
-      //TODO: line of code to add potion sprite
-      //<<<<<<< HEAD
-      Hpotion = game.add.sprite(game.world.randomX, game.world.randomY, "Hpotion");
-      //=======
-game.physics.arcade.enable(Hpotion);
-Hpotion.enableBody = true;
-
-
-      //>>>>>>> c813e003a06692763cd2b03a2218d90c46fe2095
+      console.log("potionMade");
+      Hpotion = healthPotions.create(game.world.randomX, game.world.randomY, 'Hpotion');
     }
   }
 
   function potionKill(player, Hpotion) {
     console.log("got potion");
     Hpotion.kill();
+    healthPotions.remove(Hpotion);
+    potionSound.play();
     lives += 1;
     healthText.text = 'lives: ' + lives;
   }
 
   function render() { // This was used to show the hitboxes for development purposes
     /*game.debug.body(player);
+    healthPotions.forEach(function(temp3){
+      game.debug.body(temp3);
+    }, this);
     orcs.forEach(function(temp){
       game.debug.body(temp);
     }, this);
